@@ -1,0 +1,61 @@
+/SFA/PhysicalDisk:
+  description: Physical Disk Performance Monitoring
+  targetPythonClass: ZenPacks.DDN.SFA.PhysicalDisk
+
+  datasources:
+
+    PDPerf:
+      type: COMMAND
+      cycletime: "600"
+      parser : ZenPacks.DDN.SFA.parsers.JSONParser
+      usessh : false
+      commandTemplate : 'pdsk_stats.py -u ${device/zCommandUsername} -p ${device/zCommandPassword} -t ${device/manageIp} -i ${here/id}'
+
+      datapoints:
+        TotalIOs : GAUGE
+        ReadIOs : GAUGE
+        WriteIOs : GAUGE
+        KBytesTransferred : GAUGE
+        AverageReadIOLatency : GAUGE
+        AverageWriteIOLatency : GAUGE
+
+    PDAlerts:
+      type: COMMAND
+      cycletime: "600"
+      usessh : false
+      parser : ZenPacks.DDN.SFA.parsers.PDAlertParser
+      commandTemplate : 'pdsk_events.py -u ${device/zCommandUsername} -p ${device/zCommandPassword} -t ${device/manageIp} -i ${here/id}'
+
+  graphs:
+    Aggregate:
+      units: Total count of IOs
+
+      graphpoints:
+        TotalIOs :
+          dpName: PDPerf_TotalIOs
+
+        ReadIOs:
+          dpName: PDPerf_ReadIOs
+
+        WriteIOs:
+          dpName: PDPerf_WriteIOs
+
+    IOTransferred:
+      units: KBytes 
+
+      graphpoints:
+        KBytesTransferred :
+          dpName: PDPerf_KBytesTransferred
+
+    Latency:
+      units: IO Latency in millisecs
+
+      graphpoints:
+        AverageReadIOLatency :
+          dpName: PDPerf_AverageReadIOLatency
+
+        AverageWriteIOLatency:
+          dpName: PDPerf_AverageWriteIOLatency
+
+       
+

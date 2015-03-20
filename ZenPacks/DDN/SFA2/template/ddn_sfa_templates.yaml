@@ -1,0 +1,158 @@
+/Storage/DDN/SFA/HostChannel:
+    description: Host Channel Performance Monitoring on SFA
+    targetPythonClass: ZenPacks.DDN.SFA2.HostChannel
+
+    datasources:
+        HostChannelPerf:
+            type: Python
+            cycletime: "600"
+            plugin_classname: ZenPacks.DDN.SFA2.dsplugin.HcPlugin
+            component: ${here/id}
+            eventKey: /perf/SFAHostChannel
+            eventClass: /Perf
+            enabled: True
+            severity: Warning
+
+            datapoints:
+                TotalIOs : GAUGE
+                ReadIOs : GAUGE
+                WriteIOs : GAUGE
+                KBytesTransferred : GAUGE
+                AverageReadIOLatency : GAUGE
+                AverageWriteIOLatency : GAUGE
+                TotalErrorCounters: GAUGE
+
+    graphs:
+        AggregateIO:
+            units: total number of IOs
+
+            graphpoints:
+                TotalIOs :
+                    dpName: HostChannelPerf_TotalIOs
+
+                ReadIOs:
+                    dpName: HostChannelPerf_ReadIOs
+
+                WriteIOs:
+                    dpName: HostChannelPerf_WriteIOs
+
+        Latency:
+            units: IO Latency in millisecs
+
+            graphpoints:
+                ReadLatency:
+                    dpName: HostChannelPerf_AverageReadIOLatency
+                    format: "%7.2lf"
+                WriteLatency:
+                    dpName: HostChannelPerf_AverageWriteIOLatency
+                    format: "%7.2lf"
+
+        Errors:
+            units: Total count of errors
+
+            graphpoints:
+                ErrorCounter:
+                    dpName: HostChannelPerf_TotalErrorCounters
+
+
+/Storage/DDN/SFA/PhysicalDisk:
+    description: Physical Disk Performance Monitoring
+    targetPythonClass: ZenPacks.DDN.SFA2.PhysicalDisk
+
+    datasources:
+        PDPerf:
+            type: Python
+            cycletime: "600"
+            plugin_classname: ZenPacks.DDN.SFA2.dsplugin.PdPlugin
+            component: ${here/id}
+            eventKey: /perf/SFAPhysicalDisk
+            eventClass: /Perf
+            enabled: True
+            severity: Warning
+
+            datapoints:
+                TotalIOs : GAUGE
+                ReadIOs : GAUGE
+                WriteIOs : GAUGE
+                KBytesTransferred : GAUGE
+                AverageReadIOLatency : GAUGE
+                AverageWriteIOLatency : GAUGE
+
+    graphs:
+        Aggregate:
+            units: Total count of IOs
+            graphpoints:
+                TotalIOs :
+                    dpName: PDPerf_TotalIOs
+                ReadIOs:
+                    dpName: PDPerf_ReadIOs
+                WriteIOs:
+                    dpName: PDPerf_WriteIOs
+
+        IOTransferred:
+            units: KBytes 
+            graphpoints:
+                KBytesTransferred :
+                    dpName: PDPerf_KBytesTransferred
+
+        Latency:
+            units: IO Latency in millisecs
+            graphpoints:
+                AverageReadIOLatency :
+                    dpName: PDPerf_AverageReadIOLatency
+                AverageWriteIOLatency:
+                    dpName: PDPerf_AverageWriteIOLatency
+
+/Storage/DDN/SFA/VirtualDisk:
+    description: Virtual Disk Performance Monitoring
+    targetPythonClass: ZenPacks.DDN.SFA2.VirtualDisk
+
+    datasources:
+        VDPerf:
+            type: Python
+            cycletime: "600"
+            plugin_classname: ZenPacks.DDN.SFA2.dsplugin.VdPlugin
+            component: ${here/id}
+            eventKey: /perf/SFAVirtualDisk
+            eventClass: /Perf
+            enabled: True
+            severity: Warning
+
+            datapoints:
+                TotalIOs : GAUGE
+                ForwardedIOs : GAUGE
+                ReadIOs : GAUGE
+                WriteIOs : GAUGE
+                KBytesTransferred : GAUGE
+                KBytesForwarded: GAUGE
+                AverageReadIOLatency : GAUGE
+                AverageWriteIOLatency : GAUGE
+
+    graphs:
+        Aggregate:
+            units: Total count of IOs
+            graphpoints:
+                TotalIOs :
+                    dpName: VDPerf_TotalIOs
+                ReadIOs:
+                    dpName: VDPerf_ReadIOs
+                WriteIOs:
+                    dpName: VDPerf_WriteIOs
+                ForwardedIOs:
+                    dpName: VDPerf_ForwardedIOs
+
+        IOTransferred:
+            units: KBytes 
+            graphpoints:
+                KBytesTransferred :
+                    dpName: VDPerf_KBytesTransferred
+                KBytesForwarded :
+                    dpName: VDPerf_KBytesForwarded
+
+        Latency:
+            units: IO Latency in millisecs
+            graphpoints:
+                AverageReadIOLatency :
+                    dpName: VDPerf_AverageReadIOLatency
+                AverageWriteIOLatency:
+                    dpName: VDPerf_AverageWriteIOLatency

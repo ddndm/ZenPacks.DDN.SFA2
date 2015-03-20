@@ -1,0 +1,11 @@
+/SFA/Pool:
+  description: Pool Performance Monitoring
+  targetPythonClass: ZenPacks.DDN.SFA.Pool
+
+  datasources:
+    PoolPerf:
+      type: COMMAND
+      cycletime: "600"
+      parser : ZenPacks.DDN.SFA.parsers.PoolAlertParser
+      usessh : false
+      commandTemplate : 'pool_events.py -u ${device/zCommandUsername} -p ${device/zCommandPassword} -t ${device/manageIp} -i ${here/id}'

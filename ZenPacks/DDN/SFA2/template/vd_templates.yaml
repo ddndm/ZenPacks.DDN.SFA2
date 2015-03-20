@@ -1,0 +1,60 @@
+/SFA/VirtualDisk:
+  description: Physical Disk Performance Monitoring
+  targetPythonClass: ZenPacks.DDN.SFA.VirtualDisk
+
+  datasources:
+    VDPerf:
+      type: COMMAND
+      cycletime: "600"
+      parser : ZenPacks.DDN.SFA.parsers.JSONParser
+      usessh : false
+      commandTemplate : 'vdsk_stats.py -u ${device/zCommandUsername} -p ${device/zCommandPassword} -t ${device/manageIp} -i ${here/id}'
+
+      datapoints:
+        TotalIOs : GAUGE
+        ReadIOs : GAUGE
+        WriteIOs : GAUGE
+        KBytesTransferred : GAUGE
+        AverageReadIOLatency : GAUGE
+        AverageWriteIOLatency : GAUGE
+
+    VDAlerts:
+      type: COMMAND
+      cycletime: "600"
+      usessh : false
+      parser : ZenPacks.DDN.SFA.parsers.VDAlertParser
+      commandTemplate : 'vdsk_events.py -u ${device/zCommandUsername} -p ${device/zCommandPassword} -t ${device/manageIp} -i ${here/id}'
+
+  graphs:
+    Aggregate:
+      units: Total count of IOs
+
+      graphpoints:
+        TotalIOs :
+          dpName: VDPerf_TotalIOs
+
+        ReadIOs:
+          dpName: VDPerf_ReadIOs
+
+        WriteIOs:
+          dpName: VDPerf_WriteIOs
+
+    IOTransferred:
+      units: KBytes 
+
+      graphpoints:
+        KBytesTransferred :
+          dpName: VDPerf_KBytesTransferred
+
+    Latency:
+      units: IO Latency in millisecs
+
+      graphpoints:
+        AverageReadIOLatency :
+          dpName: VDPerf_AverageReadIOLatency
+
+        AverageWriteIOLatency:
+          dpName: VDPerf_AverageWriteIOLatency
+
+       
+

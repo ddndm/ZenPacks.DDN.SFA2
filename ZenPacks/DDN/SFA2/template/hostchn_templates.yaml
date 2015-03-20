@@ -1,0 +1,61 @@
+/SFA/HostChannel:
+    description: Host Channel Performance Monitoring
+    targetPythonClass: ZenPacks.DDN.SFA.HostChannel
+
+    datasources:
+        HostChannelPerf:
+            type: COMMAND
+            cycletime: "600"
+            parser : ZenPacks.DDN.SFA.parsers.JSONParser
+            usessh : false
+            commandTemplate : 'hostchn_iostats.py -u ${device/zCommandUsername} -p ${device/zCommandPassword} -t ${device/manageIp} -i ${here/id}'
+
+            datapoints:
+                TotalIOs : GAUGE
+                ReadIOs : GAUGE
+                WriteIOs : GAUGE
+                KBytesTransferred : GAUGE
+                AverageReadIOLatency : GAUGE
+                AverageWriteIOLatency : GAUGE
+
+        HostChannelErr:
+            type: COMMAND
+            cycletime: "600"
+            parser : ZenPacks.DDN.SFA.parsers.JSONParser
+            usessh : false
+            commandTemplate : 'hostchn_errstats.py -u ${device/zCommandUsername} -p ${device/zCommandPassword} -t ${device/manageIp} -i ${here/id}'
+
+            datapoints:
+                TotalErrorCounters : GAUGE
+
+    graphs:
+        AggregateIO:
+            units: total number of IOs
+
+            graphpoints:
+                TotalIOs :
+                    dpName: HostChannelPerf_TotalIOs
+
+                ReadIOs:
+                    dpName: HostChannelPerf_ReadIOs
+
+                WriteIOs:
+                    dpName: HostChannelPerf_WriteIOs
+
+        Latency:
+            units: IO Latency in millisecs
+
+            graphpoints:
+                ReadLatency:
+                    dpName: HostChannelPerf_AverageReadIOLatency
+                    format: "%7.2lf"
+                WriteLatency:
+                    dpName: HostChannelPerf_AverageWriteIOLatency
+                    format: "%7.2lf"
+
+        Errors:
+            units: Total count of errors
+
+            graphpoints:
+                ErrorCounter:
+                    dpName: HostChannelErr_TotalErrorCounters
