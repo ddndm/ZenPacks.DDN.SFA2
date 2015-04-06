@@ -24,6 +24,18 @@ user
 <property visible="True" type="lines" id="zCollectorPlugins" >
 ['ddn.ModelSFAController', 'ddn.ModelSFAHostChannel', 'ddn.ModelSFAPhysicalDisk', 'ddn.ModelSFAPool', 'ddn.ModelSFAVirtualDisk']
 </property>
+<property visible="True" type="int" id="zCollectorClientTimeout" >
+60
+</property>
+<property visible="True" type="float" id="zCommandCommandTimeout" >
+60.0
+</property>
+<property visible="True" type="float" id="zCommandLoginTimeout" >
+60.0
+</property>
+<property visible="True" type="float" id="zStatusConnectTimeout" >
+60.0
+</property>
 <tomanycont id='rrdTemplates'>
 <object id='HostChannel' module='Products.ZenModel.RRDTemplate' class='RRDTemplate'>
 <property id='zendoc' type='string'>
